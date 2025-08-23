@@ -1,6 +1,6 @@
 # Makefile for vibe-coding-handson-20250823
 
-.PHONY: help test test-chapter4 test-chapter5 run-fizzbuzz run-pong clean install
+.PHONY: help test test-chapter4 test-chapter5 run-fizzbuzz run-pong game play clean install
 
 # Default target
 help: ## Show this help message
@@ -36,6 +36,12 @@ run-fizzbuzz: ## Run FizzBuzz demo (1-100)
 	cd chapter5 && uv run run_fizzbuzz.py
 
 run-pong: ## Run Pong game (requires display)
+	cd chapter5 && uv run --with pygame pong.py
+
+game: ## Quick shortcut to run Pong game
+	cd chapter5 && uv run --with pygame pong.py
+
+play: ## Another shortcut to run Pong game
 	cd chapter5 && uv run --with pygame pong.py
 
 # Development
