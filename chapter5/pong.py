@@ -228,6 +228,9 @@ class PongGame:
         # おたすけアイテムの更新
         self._update_helper_items()
         
+        # 効果時間の更新（毎フレーム実行）
+        self._update_effect_timers()
+        
         # パドルとの衝突判定（簡易版）
         if (self.ball.x - self.ball.radius <= self.left_paddle.x + self.left_paddle.width and
             self.ball.y >= self.left_paddle.y and
@@ -377,9 +380,6 @@ class PongGame:
         elif item_type == 'fast_paddle':
             # そのプレイヤーのパドル移動速度アップ（handle_eventsで使用）
             self.active_effects[player][item_type] = effect_duration
-        
-        # 効果時間の管理
-        self._update_effect_timers()
     
     def _update_effect_timers(self):
         """効果時間の更新と期限切れ効果の削除"""
@@ -437,17 +437,10 @@ class PongGame:
         self.screen.blit(left_text, (self.width // 4 - left_text.get_width() // 2, 50))
         self.screen.blit(right_text, (3 * self.width // 4 - right_text.get_width() // 2, 50))
         
-        # ボール所有者の表示
-        owner_font = pygame.font.Font(None, 32)
-        owner_text = f"Ball: {self.ball.owner.title()}"
-        owner_color = self.ball.get_color()
-        owner_surface = owner_font.render(owner_text, True, owner_color)
-        self.screen.blit(owner_surface, (self.width // 2 - owner_surface.get_width() // 2, 90))
-        
         # アクティブ効果の表示
         self._draw_active_effects()
         
-        # 操作説明（英語に変更して文字化けを回避）
+        # 操作説明
         if self.cpu_mode:
             instruction = "W/S: Move | Ball hits item = effect | Red=P1 Blue=P2 White=Neutral"
         else:
